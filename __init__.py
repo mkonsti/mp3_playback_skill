@@ -75,7 +75,7 @@ class MP3PlaybackSkill(MycroftSkill):
         self.register_intent(intent, self.handle_pause)
 
         intent = IntentBuilder('PlayIntent') \
-            .one_of('PlayResumeKeyword', 'ResumeKeyword')
+            .require('ResumeKeyword')
         self.register_intent(intent, self.handle_play)
 
     def handle_play_song_intent(self, message):
