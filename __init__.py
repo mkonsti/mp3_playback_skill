@@ -77,7 +77,7 @@ class MP3PlaybackSkill(MycroftSkill):
         # Play any song
         mp3s = listdir(join(dirname(__file__), "mp3"))
         index = randrange(0, len(mp3s))
-        self.process = play_mp3(join(dirname(__file__), "mp3", mp3s[index]))
+        self.audio_service.play(join(dirname(__file__), "mp3", mp3s[index]))
 
     def stop(self):
         if self.process:  # and self.process.poll() is None:
