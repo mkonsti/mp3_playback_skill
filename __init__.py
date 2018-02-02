@@ -92,12 +92,13 @@ class MP3PlaybackSkill(MycroftSkill):
     def handle_pause(self, message):
         self.audio_service.pause()
 
-
     def handle_play_music_intent(self, message):
         # Play any song
         mp3s = listdir(join(dirname(__file__), "mp3"))
         index = randrange(0, len(mp3s))
-        self.audio_service.play(join(dirname(__file__), "mp3", mp3s[index]))
+        self.audio_service.play([join(dirname(__file__), "mp3", mp3s[1]),
+                                 join(dirname(__file__), "mp3", mp3s[2]),
+                                 join(dirname(__file__), "mp3", mp3s[3])])
 
     def stop(self):
         if self.process:  # and self.process.poll() is None:
