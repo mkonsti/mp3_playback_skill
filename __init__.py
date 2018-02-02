@@ -59,10 +59,24 @@ class MP3PlaybackSkill(MycroftSkill):
             require("PlayKeyword").require("SongTitle").build()
         self.register_intent(play_song_intent,
                              self.handle_play_song_intent)
+
         play_music_intent = IntentBuilder("PlayMusicIntent").\
             require("PlayKeyword").require("MusicKeyword").build()
         self.register_intent(play_music_intent,
                              self.handle_play_music_intent)
+
+        intent = IntentBuilder('NextIntent').require('NextKeyword')
+        self.register_intent(intent, self.handle_next)
+
+        intent = IntentBuilder('PrevIntent').require('PrevKeyword')
+        self.register_intent(intent, self.handle_prev)
+
+        intent = IntentBuilder('PauseIntent').require('PauseKeyword')
+        self.register_intent(intent, self.handle_pause)
+
+        intent = IntentBuilder('PlayIntent') \
+            .one_of('PlayResumeKeyword', 'ResumeKeyword')
+        self.register_intent(intent, self.handle_play)
 
     def handle_play_song_intent(self, message):
         # Play the song requested
@@ -72,6 +86,19 @@ class MP3PlaybackSkill(MycroftSkill):
         title += ".mp3"
         title = re.sub(" ", "_", title)
         self.process = play_mp3(join(dirname(__file__), "mp3", title))
+
+    def handle_next(self, message):
+        self.audio_service.next()
+
+    def handle_prev(self, message):
+        self.audio_service.prev()
+
+    def handle_pause(self, message):
+        self.audio_service.pause()
+
+    def handle_play(self, message):
+        """Resume playback if paused"""
+        self.audio_service.resume()
 
     def handle_play_music_intent(self, message):
         # Play any song
